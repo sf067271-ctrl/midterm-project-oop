@@ -4,13 +4,15 @@ public class UserInterface {
 
     private final Scanner scanner = new Scanner(System.in);
 
-    public void menu(){
+    public void menu() {
         boolean exit = false;
 
         MenuFunctions mf = new MenuFunctions(scanner);
-        
-        while(!exit){
-            System.out.println("Menu");
+
+        while (!exit) {
+            System.out.println("=".repeat(30));
+            System.out.printf("%17s\n", "MENU");
+            System.out.println("=".repeat(30));
             System.out.println("1. Add Item");
             System.out.println("2. Update Item");
             System.out.println("3. Remove Item");
@@ -24,7 +26,7 @@ public class UserInterface {
 
             String userChoice = scanner.nextLine().trim();
 
-            switch(userChoice){
+            switch (userChoice) {
                 case "1" -> mf.addItem();
                 case "2" -> mf.updateItem();
                 case "3" -> mf.removeItem();
@@ -33,10 +35,10 @@ public class UserInterface {
                 case "6" -> mf.searchItem();
                 case "7" -> mf.sortItem();
                 case "8" -> mf.displayLowStockItems();
-                case "9" -> exit = mf.exit(); 
+                case "9" -> exit = mf.exit();
                 default -> GeneralFunctions.switchErrorMessage();
             }
         }
-        
-    }   
+
+    }
 }

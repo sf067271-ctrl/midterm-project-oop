@@ -18,6 +18,8 @@ public class SortItemsFunctions {
         boolean isValid = false;
         boolean ascending = false;
 
+        System.out.println("=".repeat(30));
+
         while (!isValid) {
             System.out.print("Please input if ascending (ASC) or descending (DESC): ");
             String userInput = sc.nextLine().trim();

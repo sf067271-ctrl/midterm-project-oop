@@ -39,16 +39,20 @@ public class UpdateItemFunctions {
     public void updateQuantity() {
 
         boolean isValid = false;
+
+        System.out.println("=".repeat(30));
+
         String itemId = getInputId();
+        int oldQuantity;
 
         while(!isValid){
             System.out.printf("Input new Quantity for (Item ID: %s): ", itemId);
-            String newQuantityTemp = sc.nextLine();
-            int oldQuantity;
+            String newQuantityTemp = sc.nextLine().trim();
 
             try {
                 int newQuantity = Integer.parseInt(newQuantityTemp);
-                oldQuantity = newQuantity;
+
+                System.out.println("=".repeat(30));
 
                 if (newQuantity < 0){
                     GeneralFunctions.errorNumberMessage();
@@ -58,6 +62,7 @@ public class UpdateItemFunctions {
                 Items item = checkerFunctions.findItem(itemId);
 
                 if (item != null){
+                    oldQuantity = item.getQuantity();
                     item.setQuantity(newQuantity);
                     GeneralFunctions.updateQuanityMessage(oldQuantity, newQuantity, item.getName());
                     isValid = true;
@@ -73,6 +78,9 @@ public class UpdateItemFunctions {
 
     public void updatePrice() {
         boolean isValid = false;
+
+        System.out.println("=".repeat(30));
+
         String itemId = getInputId();
 
         while(!isValid){
@@ -82,7 +90,8 @@ public class UpdateItemFunctions {
 
             try {
                 double newPrice = Double.parseDouble(newPriceTemp);
-                oldPrice = newPrice;
+
+                System.out.println("=".repeat(30));
 
                 if (newPrice <= 0 && !Validations.checkValidDouble(newPriceTemp)){
                     GeneralFunctions.errorNumberMessage();
@@ -92,6 +101,7 @@ public class UpdateItemFunctions {
                 Items item = checkerFunctions.findItem(itemId);
 
                 if (item != null){
+                    oldPrice = item.getPrice();
                     item.setPrice(newPrice);
                     GeneralFunctions.updatePriceMessage(oldPrice, newPrice, item.getName());
                     isValid = true;

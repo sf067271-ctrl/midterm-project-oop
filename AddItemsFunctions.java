@@ -69,7 +69,7 @@ public class AddItemsFunctions {
         String name = "";
 
         while (!isValid) {
-            System.out.print("Enter item's Name: ");
+            System.out.print("Enter Item's Name: ");
             name = sc.nextLine().trim();
 
             if (Validations.isItemNameValid(name)) {
