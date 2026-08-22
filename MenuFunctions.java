@@ -24,7 +24,7 @@ public class MenuFunctions {
         String category = addItems.getCategory();
 
         String itemName = addItems.getName();
-        String itemId = addItems.getId(category);
+        String itemId = addItems.getId(category).toUpperCase();
         int itemQuantity = addItems.getQuantity();
         double itemPrice = addItems.getPrice();
 
