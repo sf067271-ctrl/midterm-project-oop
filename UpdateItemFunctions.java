@@ -6,34 +6,13 @@ public class UpdateItemFunctions {
     private final Scanner sc;
     private final ArrayList<Items> items;
     CheckerFunctions checkerFunctions;
+    ItemsInformation information;
 
     public UpdateItemFunctions(Scanner sc, ArrayList<Items> items) {
         this.sc = sc;
         this.items = items;
         this.checkerFunctions = new CheckerFunctions(this.items);
-    }
-
-    private String getInputId(){
-        boolean isValid = false;
-        String itemID = "";
-
-        while (!isValid) {
-            System.out.print("Input Item's ID: ");
-            itemID = sc.nextLine().trim();
-
-            if (!Validations.isItemValid(itemID)){
-                GeneralFunctions.errorStringMessage();
-                continue;
-            }
-            
-            if (checkerFunctions.checkItemIdExists(itemID)){
-                isValid = true;
-            } else {
-                GeneralFunctions.itemIdNotFoundMessage();
-            }
-        }
-
-        return itemID;
+        this.information = new ItemsInformation(sc, this.items);
     }
 
     public void updateQuantity() {
@@ -42,7 +21,7 @@ public class UpdateItemFunctions {
 
         System.out.println("=".repeat(30));
 
-        String itemId = getInputId();
+        String itemId = information.getId("checker");
         int oldQuantity;
 
         while(!isValid){
@@ -55,7 +34,7 @@ public class UpdateItemFunctions {
                 System.out.println("=".repeat(30));
 
                 if (newQuantity < 0){
-                    GeneralFunctions.errorNumberMessage();
+                    MessagesFunctions.errorNumberMessage();
                     continue;
                 }
 
@@ -64,14 +43,14 @@ public class UpdateItemFunctions {
                 if (item != null){
                     oldQuantity = item.getQuantity();
                     item.setQuantity(newQuantity);
-                    GeneralFunctions.updateQuanityMessage(oldQuantity, newQuantity, item.getName());
+                    MessagesFunctions.updateQuanityMessage(oldQuantity, newQuantity, item.getName());
                     isValid = true;
                 } else {
-                    GeneralFunctions.itemIdNotFoundMessage();
+                    MessagesFunctions.itemIdNotFoundMessage();
                 }
                 
             } catch (NumberFormatException e){
-                GeneralFunctions.errorNumberMessage();
+                MessagesFunctions.errorNumberMessage();
             }
         }
     }
@@ -81,7 +60,7 @@ public class UpdateItemFunctions {
 
         System.out.println("=".repeat(30));
 
-        String itemId = getInputId();
+        String itemId = information.getId("checker");
 
         while(!isValid){
             System.out.printf("Input new Price for (Item ID: %s): P", itemId);
@@ -94,7 +73,7 @@ public class UpdateItemFunctions {
                 System.out.println("=".repeat(30));
 
                 if (newPrice <= 0 && !Validations.checkValidDouble(newPriceTemp)){
-                    GeneralFunctions.errorNumberMessage();
+                    MessagesFunctions.errorNumberMessage();
                     continue;
                 }
 
@@ -103,14 +82,14 @@ public class UpdateItemFunctions {
                 if (item != null){
                     oldPrice = item.getPrice();
                     item.setPrice(newPrice);
-                    GeneralFunctions.updatePriceMessage(oldPrice, newPrice, item.getName());
+                    MessagesFunctions.updatePriceMessage(oldPrice, newPrice, item.getName());
                     isValid = true;
                 } else {
-                    GeneralFunctions.itemIdNotFoundMessage();
+                    MessagesFunctions.itemIdNotFoundMessage();
                 }
 
             } catch (NumberFormatException e){
-                GeneralFunctions.errorNumberMessage();
+                MessagesFunctions.errorNumberMessage();
             }
         }
     }

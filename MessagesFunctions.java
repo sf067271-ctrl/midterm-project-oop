@@ -1,4 +1,4 @@
-public class GeneralFunctions {
+public class MessagesFunctions {
     
     public static void errorNumberMessage(){
         System.out.println("Invalid input! Please input a valid number.");
@@ -45,6 +45,6 @@ public class GeneralFunctions {
     }
 
     public static void missingCategoryMessage(String category){
-        System.out.printf("Category %s does not exists!", category);
+        System.out.printf("No Category %s found in the inventory!\n", category);
     }
 }

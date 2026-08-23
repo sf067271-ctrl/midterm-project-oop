@@ -21,7 +21,7 @@ public class SortItemsFunctions {
         System.out.println("=".repeat(30));
 
         while (!isValid) {
-            System.out.print("Please input if ascending (ASC) or descending (DESC): ");
+            System.out.print("Please input if Ascending (ASC) or Descending (DESC): ");
             String userInput = sc.nextLine().trim();
 
             if ("ascending".equalsIgnoreCase(userInput)
@@ -37,7 +37,7 @@ public class SortItemsFunctions {
                 isValid = true;
 
             } else {
-                System.out.println("Invalid input. Please enter ASC or DESC.");
+                System.out.println("Invalid input. Please enter Ascending (ASC) or Descending (DESC).");
             }
         }
 

@@ -4,27 +4,31 @@ import java.util.ArrayList;
 public class MenuFunctions {
     final private Scanner sc;
     final private ArrayList<Items> ItemInventory = new ArrayList<>();
+
     UpdateItemFunctions updateItemFunctions;
     CheckerFunctions checkerFunctions;
     SortItemsFunctions sortItemsFunctions;
+    ItemsInformation information;
 
     public MenuFunctions(Scanner sc) {
         this.sc = sc;
-        updateItemFunctions = new UpdateItemFunctions(this.sc, ItemInventory);
-        checkerFunctions = new CheckerFunctions(ItemInventory);
-        sortItemsFunctions = new SortItemsFunctions(this.sc, ItemInventory);
+        this.updateItemFunctions = new UpdateItemFunctions(this.sc, ItemInventory);
+        this.checkerFunctions = new CheckerFunctions(ItemInventory);
+        this.sortItemsFunctions = new SortItemsFunctions(this.sc, ItemInventory);
+        this.information = new ItemsInformation(this.sc, ItemInventory);
     }
 
     public void addItem() {
         System.out.println("=".repeat(30));
         System.out.printf("%18s\n", "ADD ITEM");
         System.out.println("=".repeat(30));
-        AddItemsFunctions addItems = new AddItemsFunctions(sc, ItemInventory);
+
+        ItemsInformation addItems = new ItemsInformation(sc, ItemInventory);
 
         String category = addItems.getCategory();
 
         String itemName = addItems.getName();
-        String itemId = addItems.getId(category).toUpperCase();
+        String itemId = addItems.getId("addItem").toUpperCase();
         int itemQuantity = addItems.getQuantity();
         double itemPrice = addItems.getPrice();
 
@@ -32,13 +36,13 @@ public class MenuFunctions {
 
         if (category.equalsIgnoreCase("clothing")) {
             ItemInventory.add(new Clothing(itemId, itemName, itemQuantity, itemPrice));
-            GeneralFunctions.addedSuccessMessage();
+            MessagesFunctions.addedSuccessMessage();
         } else if (category.equalsIgnoreCase("entertainment")) {
             ItemInventory.add(new Entertainment(itemId, itemName, itemQuantity, itemPrice));
-            GeneralFunctions.addedSuccessMessage();
+            MessagesFunctions.addedSuccessMessage();
         } else if (category.equalsIgnoreCase("electronics")) {
             ItemInventory.add(new Electronics(itemId, itemName, itemQuantity, itemPrice));
-            GeneralFunctions.addedSuccessMessage();
+            MessagesFunctions.addedSuccessMessage();
         }
     }
 
@@ -48,10 +52,11 @@ public class MenuFunctions {
         System.out.println("=".repeat(30));
         System.out.printf("%20s\n", "UPDATE ITEM");
         System.out.println("=".repeat(30));
+
         while (!isValid) {
 
             if (ItemInventory.isEmpty()) {
-                GeneralFunctions.arrayEmptyMessage();
+                MessagesFunctions.arrayEmptyMessage();
                 break;
             }
 
@@ -71,7 +76,7 @@ public class MenuFunctions {
                     updateItemFunctions.updatePrice();
                     isValid = true;
                 }
-                default -> GeneralFunctions.switchErrorMessage();
+                default -> MessagesFunctions.switchErrorMessage();
             }
         }
     }
@@ -80,22 +85,15 @@ public class MenuFunctions {
 
         boolean isValid = false;
 
-        while (!isValid) {
-
+        if (ItemInventory.isEmpty()) {
             System.out.println("=".repeat(30));
+            MessagesFunctions.arrayEmptyMessage();
+            return;            
+        }
 
-            if (ItemInventory.isEmpty()) {
-                GeneralFunctions.arrayEmptyMessage();
-                break;
-            }
-
-            System.out.print("Input Item's ID: ");
-            String itemId = sc.nextLine().trim();
-
-            if (!Validations.isItemValid(itemId)) {
-                GeneralFunctions.errorStringMessage();
-                continue;
-            }
+        while (!isValid) {
+            System.out.println("=".repeat(30));
+            String itemId = information.getId("checker");
 
             Items item = checkerFunctions.findItem(itemId);
 
@@ -103,38 +101,21 @@ public class MenuFunctions {
 
             if (item != null) {
                 ItemInventory.remove(item);
-                GeneralFunctions.removeItemMessage(item.getName());
+                MessagesFunctions.removeItemMessage(item.getName());
                 isValid = true;
-            } else {
-                GeneralFunctions.itemIdNotFoundMessage();
             }
         }
     }
 
     public void displayItemsByCategory() {
-        boolean isValid = false;
-        String userInput = "";
+        System.out.println("=".repeat(30));
 
-        while (!isValid) {
-
-            System.out.println("=".repeat(30));
-
-            if (ItemInventory.isEmpty()) {
-                GeneralFunctions.arrayEmptyMessage();
-                return;
-            }
-
-            System.out.print("Enter Category (Clothing, Electronics, Entertainment): ");
-            userInput = sc.nextLine().trim();
-
-            if (userInput.equalsIgnoreCase("clothing")
-                    || userInput.equalsIgnoreCase("electronics")
-                    || userInput.equalsIgnoreCase("entertainment")) {
-                isValid = true;
-            } else {
-                GeneralFunctions.errorCategoryMessage();
-            }
+        if (ItemInventory.isEmpty()) {
+            MessagesFunctions.arrayEmptyMessage();
+            return;
         }
+
+        String userInput = information.getCategory();
 
         // Column headers
         String idHeader = "ID";
@@ -172,8 +153,10 @@ public class MenuFunctions {
             }
         }
 
+        System.out.println("=".repeat(30));
+
         if (!isFound) {
-            GeneralFunctions.missingCategoryMessage(userInput); // userInput is a category
+            MessagesFunctions.missingCategoryMessage(userInput); // userInput is a category
             return;
         }
 
@@ -202,7 +185,7 @@ public class MenuFunctions {
         String separator = "=".repeat(totalWidth);
 
         // Display table
-        System.out.println("\nItems under " + userInput + ":");
+        System.out.println("Items under " + userInput.toUpperCase() + ":");
         System.out.println(separator);
 
         System.out.printf(
@@ -239,9 +222,9 @@ public class MenuFunctions {
     }
 
     public void displayAllItems() {
-
         if (ItemInventory.isEmpty()) {
-            GeneralFunctions.arrayEmptyMessage();
+            System.out.println("=".repeat(30));
+            MessagesFunctions.arrayEmptyMessage();
             return;
         }
 
@@ -284,6 +267,8 @@ public class MenuFunctions {
         int totalWidth = idWidth + nameWidth + quantityWidth + priceWidth + categoryWidth;
 
         System.out.println("=".repeat(totalWidth));
+        System.out.printf("%32s%n", "DISPLAY ALL ITEMS");
+        System.out.println("=".repeat(totalWidth));
 
         // Print header
         System.out.printf("%-" + idWidth + "s", idHeader);
@@ -310,7 +295,7 @@ public class MenuFunctions {
             System.out.printf("%-" + categoryWidth + "s%n", category);
         }
 
-        System.out.println("=".repeat(totalWidth));
+        System.out.println("=".repeat(totalWidth) + "\n");
     }
 
     public void searchItem() {
@@ -318,20 +303,16 @@ public class MenuFunctions {
 
         System.out.println("=".repeat(30));
 
+        if (ItemInventory.isEmpty()) {
+            MessagesFunctions.arrayEmptyMessage();
+            return;
+        }
+
+        String itemID = information.getId("checker");
+
+        System.out.println("=".repeat(30));
+
         while (!isFound) {
-
-            if (ItemInventory.isEmpty()) {
-                GeneralFunctions.arrayEmptyMessage();
-                return;
-            }
-
-            System.out.print("Input Item's ID: ");
-            String itemID = sc.nextLine().trim();
-
-            if (!Validations.isItemValid(itemID)) {
-                GeneralFunctions.errorStringMessage();
-            }
-
             Items item = checkerFunctions.findItem(itemID);
 
             if (item != null) {
@@ -346,7 +327,7 @@ public class MenuFunctions {
                 System.out.printf("Price    : P%,.2f%n", item.getPrice());
                 System.out.println("Category : " + item.getCategory());
             } else {
-                GeneralFunctions.itemIdNotFoundMessage();
+                MessagesFunctions.itemIdNotFoundMessage();
             }
         }
     }
@@ -356,13 +337,12 @@ public class MenuFunctions {
 
         System.out.println("=".repeat(30));
 
+        if (ItemInventory.isEmpty()) {
+            MessagesFunctions.arrayEmptyMessage();
+            return;
+        }
+
         while (!isValid) {
-
-            if (ItemInventory.isEmpty()) {
-                GeneralFunctions.arrayEmptyMessage();
-                break;
-            }
-
             System.out.println("What option would you like to sort: ");
             System.out.println("1. Quantity");
             System.out.println("2. Price");
@@ -379,7 +359,7 @@ public class MenuFunctions {
                     sortItemsFunctions.sortByPrice();
                     isValid = true;
                 }
-                default -> GeneralFunctions.switchErrorMessage();
+                default -> MessagesFunctions.switchErrorMessage();
             }
         }
     }
@@ -389,7 +369,7 @@ public class MenuFunctions {
         System.out.println("=".repeat(30));
 
         if (ItemInventory.isEmpty()) {
-            GeneralFunctions.arrayEmptyMessage();
+            MessagesFunctions.arrayEmptyMessage();
             return;
         }
 

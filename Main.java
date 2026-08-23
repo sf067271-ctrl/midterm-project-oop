@@ -1,4 +1,4 @@
-public class Main{
+public class Main {
     public static void main(String[] args) {
         UserInterface ui = new UserInterface();
 
@@ -6,6 +6,7 @@ public class Main{
     }
 }
 
-// SHOULD I INSTEAD USE NUMBERS WHEN CHOOSING WHAT CATEGORY IT IS?
-
-// SHOULD I CHANGE THE NAME OF THE CLASS GENERAL FUNCTION TO A MESSAGES CLASS
+// TODOS
+// FIX THE OUTPUT TABLE FOR DISPLAY BY CATEGORY, MAKE IT CLEANER!!
+// FIX THE OUTPUT FOR SEARCH ITEM
+// FIX THE OUTPUT FOR SORT ITEMS

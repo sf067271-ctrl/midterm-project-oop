@@ -36,7 +36,7 @@ public class UserInterface {
                 case "7" -> mf.sortItem();
                 case "8" -> mf.displayLowStockItems();
                 case "9" -> exit = mf.exit();
-                default -> GeneralFunctions.switchErrorMessage();
+                default -> MessagesFunctions.switchErrorMessage();
             }
         }
 

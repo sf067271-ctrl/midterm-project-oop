@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AddItemsFunctions {
+public class ItemsInformation {
     private final Scanner sc;
     private final ArrayList<Items> items;
     CheckerFunctions checkerFunctions;
 
-    public AddItemsFunctions(Scanner sc, ArrayList<Items> items) {
+    public ItemsInformation(Scanner sc, ArrayList<Items> items) {
         this.sc = sc;
         this.items = items;
         this.checkerFunctions = new CheckerFunctions(this.items);
@@ -20,27 +20,19 @@ public class AddItemsFunctions {
             System.out.print("Enter Category (Clothing, Electronics, Entertainment): ");
             userInput = sc.nextLine().trim();
 
-            if (userInput.equalsIgnoreCase("clothing")
-                    || userInput.equalsIgnoreCase("electronics")
-                    || userInput.equalsIgnoreCase("entertainment")) {
+            if (userInput.toUpperCase().equals("CLOTHING")
+                    || userInput.toUpperCase().equals("ELECTRONICS")
+                    || userInput.toUpperCase().equals("ENTERTAINMENT")) {
                 isValid = true;
             } else {
-                GeneralFunctions.errorCategoryMessage();
+                MessagesFunctions.errorCategoryMessage();
             }
         }
 
-        if (userInput.equalsIgnoreCase("clothing")) {
-            return "CLOTHING";
-        } else if (userInput.equalsIgnoreCase("electronics")) {
-            return "ELECTRONICS";
-        } else if (userInput.equalsIgnoreCase("entertainment")) {
-            return "ENTERTAINMENT";
-        }
-
-        return null;
+        return userInput;
     }
 
-    public String getId(String itemCategory) {
+    public String getId(String getIdType) {
         boolean isValid = false;
         String itemId = "";
 
@@ -48,20 +40,27 @@ public class AddItemsFunctions {
             System.out.print("Enter Item's ID (ABC-1234): ");
             String userInputTemp = sc.nextLine().trim();
 
-            if (checkerFunctions.checkItemIdExists(userInputTemp)){
-                GeneralFunctions.itemIdExistMessage();
+            if (checkerFunctions.checkItemIdExists(userInputTemp) && "addItem".equalsIgnoreCase(getIdType)){
+                MessagesFunctions.itemIdExistMessage();
                 continue;
             }
             
             if (Validations.isItemValid(userInputTemp)) {
-                itemId += userInputTemp;
+                itemId = userInputTemp;
                 isValid = true;
             } else {
-                GeneralFunctions.errorStringMessage();
+                MessagesFunctions.errorStringMessage();
+                continue;
+            }
+
+            if ("checker".equalsIgnoreCase(getIdType) && checkerFunctions.checkItemIdExists(itemId)){
+                isValid = true;
+            } else if ("checker".equalsIgnoreCase(getIdType)) {
+                MessagesFunctions.itemIdNotFoundMessage();
             }
         }
 
-        return itemId;
+        return itemId.toUpperCase();
     }
 
     public String getName() {
@@ -75,7 +74,7 @@ public class AddItemsFunctions {
             if (Validations.isItemNameValid(name)) {
                 isValid = true;
             } else {
-                GeneralFunctions.errorStringMessage();
+                MessagesFunctions.errorStringMessage();
             }
         }
 
@@ -94,13 +93,13 @@ public class AddItemsFunctions {
                 quantity = Integer.parseInt(quantityString);
 
                 if (quantity <= 0) {
-                    GeneralFunctions.errorNumberMessage();
+                    MessagesFunctions.errorNumberMessage();
                     continue;
                 }
 
                 isValid = true;
             } catch (NumberFormatException e) {
-                GeneralFunctions.errorNumberMessage();
+                MessagesFunctions.errorNumberMessage();
             }
         }
 
@@ -116,7 +115,7 @@ public class AddItemsFunctions {
             String itemPriceTemp = sc.nextLine().trim();
 
             if (!Validations.checkValidDouble(itemPriceTemp)) {
-                GeneralFunctions.errorNumberMessage();
+                MessagesFunctions.errorNumberMessage();
                 continue;
             }
 
@@ -124,13 +123,13 @@ public class AddItemsFunctions {
                 itemPrice = Double.parseDouble(itemPriceTemp);
 
                 if (itemPrice < 0) {
-                    GeneralFunctions.errorNumberMessage();
+                    MessagesFunctions.errorNumberMessage();
                     continue;
                 }
 
                 isValid = true;
             } catch (NumberFormatException e) {
-                GeneralFunctions.errorNumberMessage();
+                MessagesFunctions.errorNumberMessage();
             }
         }
 
