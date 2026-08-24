@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class ItemsInformation {
     private final Scanner sc;
     private final ArrayList<Items> items;
+    private final int QUANTITY_LIMIT = 100000;
     CheckerFunctions checkerFunctions;
 
     public ItemsInformation(Scanner sc, ArrayList<Items> items) {
@@ -92,7 +93,7 @@ public class ItemsInformation {
             try {
                 quantity = Integer.parseInt(quantityString);
 
-                if (quantity <= 0) {
+                if (quantity <= 0 && quantity > QUANTITY_LIMIT) {
                     MessagesFunctions.errorNumberMessage();
                     continue;
                 }
