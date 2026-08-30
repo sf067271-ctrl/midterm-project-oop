@@ -15,13 +15,13 @@ public class UpdateItemFunctions {
         this.information = new ItemsInformation(sc, this.items);
     }
 
-    public void updateQuantity() {
+    public boolean updateQuantity(String itemId, Items item) {
 
         boolean isValid = false;
+        boolean isUpdated = false;
 
         System.out.println("=".repeat(30));
 
-        String itemId = information.getId("checker");
         int oldQuantity;
 
         while(!isValid){
@@ -38,13 +38,12 @@ public class UpdateItemFunctions {
                     continue;
                 }
 
-                Items item = checkerFunctions.findItem(itemId);
-
                 if (item != null){
                     oldQuantity = item.getQuantity();
                     item.setQuantity(newQuantity);
                     MessagesFunctions.updateQuanityMessage(oldQuantity, newQuantity, item.getName());
                     isValid = true;
+                    isUpdated = true;
                 } else {
                     MessagesFunctions.itemIdNotFoundMessage();
                 }
@@ -53,14 +52,15 @@ public class UpdateItemFunctions {
                 MessagesFunctions.errorNumberMessage();
             }
         }
+
+        return isUpdated;
     }
 
-    public void updatePrice() {
+    public boolean updatePrice(String itemId, Items item) {
         boolean isValid = false;
+        boolean isUpdated = false;
 
         System.out.println("=".repeat(30));
-
-        String itemId = information.getId("checker");
 
         while(!isValid){
             System.out.printf("Input new Price for (Item ID: %s): P", itemId);
@@ -72,18 +72,17 @@ public class UpdateItemFunctions {
 
                 System.out.println("=".repeat(30));
 
-                if (newPrice <= 0 && !Validations.checkValidDouble(newPriceTemp)){
+                if (newPrice <= 0 || !Validations.checkValidDouble(newPriceTemp)){
                     MessagesFunctions.errorNumberMessage();
                     continue;
                 }
-
-                Items item = checkerFunctions.findItem(itemId);
 
                 if (item != null){
                     oldPrice = item.getPrice();
                     item.setPrice(newPrice);
                     MessagesFunctions.updatePriceMessage(oldPrice, newPrice, item.getName());
                     isValid = true;
+                    isUpdated = true;
                 } else {
                     MessagesFunctions.itemIdNotFoundMessage();
                 }
@@ -92,5 +91,7 @@ public class UpdateItemFunctions {
                 MessagesFunctions.errorNumberMessage();
             }
         }
+
+        return isUpdated;
     }
 }

@@ -26,7 +26,7 @@ public class ItemsInformation {
                     || userInput.toUpperCase().equals("ENTERTAINMENT")) {
                 isValid = true;
             } else {
-                MessagesFunctions.errorCategoryMessage();
+                MessagesFunctions.errorCategoryMessage(userInput);
             }
         }
 
@@ -93,7 +93,7 @@ public class ItemsInformation {
             try {
                 quantity = Integer.parseInt(quantityString);
 
-                if (quantity <= 0 && quantity > QUANTITY_LIMIT) {
+                if (quantity <= 0 || quantity > QUANTITY_LIMIT) {
                     MessagesFunctions.errorNumberMessage();
                     continue;
                 }

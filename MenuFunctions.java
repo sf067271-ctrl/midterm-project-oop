@@ -16,6 +16,7 @@ public class MenuFunctions {
         this.checkerFunctions = new CheckerFunctions(ItemInventory);
         this.sortItemsFunctions = new SortItemsFunctions(this.sc, ItemInventory);
         this.information = new ItemsInformation(this.sc, ItemInventory);
+        ItemInventory.add(new Clothing("ABC-1234", "Louie", 2, 23.45));
     }
 
     public void addItem() {
@@ -48,35 +49,42 @@ public class MenuFunctions {
 
     public void updateItem() {
         boolean isValid = false;
+        boolean isUpdated = false;
 
         System.out.println("=".repeat(30));
         System.out.printf("%20s\n", "UPDATE ITEM");
         System.out.println("=".repeat(30));
 
-        while (!isValid) {
+        if (ItemInventory.isEmpty()) {
+            MessagesFunctions.arrayEmptyMessage();
+            return;
+        }
 
-            if (ItemInventory.isEmpty()) {
-                MessagesFunctions.arrayEmptyMessage();
-                break;
-            }
+        while(!isValid){
+            // Asks for the item's id before updating an item
+            String itemId = information.getId("checker");
 
-            System.out.println("What option would you like to update: ");
-            System.out.println("1. Quantity");
-            System.out.println("2. Price");
-            System.out.print("Enter your choice: ");
+            Items item = checkerFunctions.findItem(itemId);
 
-            String userChoice = sc.nextLine().trim();
+            while (item != null && !isUpdated){
+                System.out.println("What option would you like to update: ");
+                System.out.println("1. Quantity");
+                System.out.println("2. Price");
+                System.out.print("Enter your choice: ");
+                
+                String userChoice = sc.nextLine().trim();
 
-            switch (userChoice) {
-                case "1" -> {
-                    updateItemFunctions.updateQuantity();
-                    isValid = true;
+                switch (userChoice) {
+                    case "1" -> {
+                        isUpdated = updateItemFunctions.updateQuantity(itemId, item);
+                        isValid = true;
+                    }
+                    case "2" -> {
+                        isUpdated = updateItemFunctions.updatePrice(itemId, item);
+                        isValid = true;
+                    }
+                    default -> MessagesFunctions.switchErrorMessage();
                 }
-                case "2" -> {
-                    updateItemFunctions.updatePrice();
-                    isValid = true;
-                }
-                default -> MessagesFunctions.switchErrorMessage();
             }
         }
     }
@@ -122,14 +130,12 @@ public class MenuFunctions {
         String nameHeader = "Name";
         String quantityHeader = "Quantity";
         String priceHeader = "Price";
-        String categoryHeader = "Category";
 
         // Start column widths based on header lengths
         int idWidth = idHeader.length();
         int nameWidth = nameHeader.length();
         int quantityWidth = quantityHeader.length();
         int priceWidth = priceHeader.length();
-        int categoryWidth = categoryHeader.length();
 
         boolean isFound = false;
 
@@ -143,20 +149,18 @@ public class MenuFunctions {
                 String name = item.getName();
                 String quantity = String.valueOf(item.getQuantity());
                 String price = String.format("P%,.2f", item.getPrice());
-                String category = item.getCategory();
 
                 idWidth = Math.max(idWidth, id.length());
                 nameWidth = Math.max(nameWidth, name.length());
                 quantityWidth = Math.max(quantityWidth, quantity.length());
                 priceWidth = Math.max(priceWidth, price.length());
-                categoryWidth = Math.max(categoryWidth, category.length());
             }
         }
 
         System.out.println("=".repeat(30));
 
         if (!isFound) {
-            MessagesFunctions.missingCategoryMessage(userInput); // userInput is a category
+            MessagesFunctions.errorCategoryMessage(userInput); // userInput is a category
             return;
         }
 
@@ -165,26 +169,24 @@ public class MenuFunctions {
         nameWidth += 2;
         quantityWidth += 2;
         priceWidth += 2;
-        categoryWidth += 2;
 
         // Create dynamic row format
         String rowFormat = "%-" + idWidth + "s"
                 + "%-" + nameWidth + "s"
                 + "%-" + quantityWidth + "s"
-                + "%-" + priceWidth + "s"
-                + "%-" + categoryWidth + "s%n";
+                + "%-" + priceWidth + "s";
 
         // Calculate total table width
         int totalWidth = idWidth
                 + nameWidth
                 + quantityWidth
-                + priceWidth
-                + categoryWidth;
+                + priceWidth;
 
         // Separator
         String separator = "=".repeat(totalWidth);
 
         // Display table
+        System.out.println("\n\n" + separator);
         System.out.println("Items under " + userInput.toUpperCase() + ":");
         System.out.println(separator);
 
@@ -193,10 +195,9 @@ public class MenuFunctions {
                 idHeader,
                 nameHeader,
                 quantityHeader,
-                priceHeader,
-                categoryHeader);
+                priceHeader);
 
-        System.out.println(separator);
+        System.out.println("\n" + separator);
 
         // Display matching items
         for (Items item : ItemInventory) {
@@ -206,19 +207,17 @@ public class MenuFunctions {
                 String name = item.getName();
                 String quantity = String.valueOf(item.getQuantity());
                 String price = String.format("P%,.2f", item.getPrice());
-                String category = item.getCategory();
 
                 System.out.printf(
                         rowFormat,
                         id,
                         name,
                         quantity,
-                        price,
-                        category);
+                        price);
             }
         }
 
-        System.out.println(separator);
+        System.out.println("\n" + separator + "\n\n");
     }
 
     public void displayAllItems() {

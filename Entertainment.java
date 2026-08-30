@@ -5,6 +5,6 @@ public class Entertainment extends Items{
 
     @Override
     public String getCategory(){
-        return "CLOTHING";
+        return "ENTERTAINMENT";
     }
 }

@@ -8,10 +8,6 @@ public class MessagesFunctions {
         System.out.println("Invalid input! Please input a valid format.");
     }
 
-    public static void errorCategoryMessage(){
-        System.out.println("Invalid input! Please input (Clothing, Electronics, and Entertainment).");
-    }
-
     public static void addedSuccessMessage(){
         System.out.println("Item added sucessfully!");
     }
@@ -44,7 +40,7 @@ public class MessagesFunctions {
         System.out.printf("Item %s has been removed from the inventory.\n", itemName);
     }
 
-    public static void missingCategoryMessage(String category){
-        System.out.printf("No Category %s found in the inventory!\n", category);
+    public static void errorCategoryMessage(String category){
+        System.out.printf("Category %s does not exist!%n", category);
     }
 }
