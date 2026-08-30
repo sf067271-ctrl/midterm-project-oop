@@ -5,6 +5,7 @@ public class UpdateItemFunctions {
 
     private final Scanner sc;
     private final ArrayList<Items> items;
+    private final int QUANTITY_LIMIT = 100000;
     CheckerFunctions checkerFunctions;
     ItemsInformation information;
 
@@ -24,7 +25,7 @@ public class UpdateItemFunctions {
 
         int oldQuantity;
 
-        while(!isValid){
+        while (!isValid) {
             System.out.printf("Input new Quantity for (Item ID: %s): ", itemId);
             String newQuantityTemp = sc.nextLine().trim();
 
@@ -33,12 +34,12 @@ public class UpdateItemFunctions {
 
                 System.out.println("=".repeat(30));
 
-                if (newQuantity < 0){
+                if (newQuantity < 0 || newQuantity > QUANTITY_LIMIT) {
                     MessagesFunctions.errorNumberMessage();
                     continue;
                 }
 
-                if (item != null){
+                if (item != null) {
                     oldQuantity = item.getQuantity();
                     item.setQuantity(newQuantity);
                     MessagesFunctions.updateQuanityMessage(oldQuantity, newQuantity, item.getName());
@@ -47,8 +48,8 @@ public class UpdateItemFunctions {
                 } else {
                     MessagesFunctions.itemIdNotFoundMessage();
                 }
-                
-            } catch (NumberFormatException e){
+
+            } catch (NumberFormatException e) {
                 MessagesFunctions.errorNumberMessage();
             }
         }
@@ -62,7 +63,7 @@ public class UpdateItemFunctions {
 
         System.out.println("=".repeat(30));
 
-        while(!isValid){
+        while (!isValid) {
             System.out.printf("Input new Price for (Item ID: %s): P", itemId);
             String newPriceTemp = sc.nextLine();
             double oldPrice;
@@ -72,12 +73,12 @@ public class UpdateItemFunctions {
 
                 System.out.println("=".repeat(30));
 
-                if (newPrice <= 0 || !Validations.checkValidDouble(newPriceTemp)){
+                if (newPrice <= 0 || !Validations.checkValidDouble(newPriceTemp)) {
                     MessagesFunctions.errorNumberMessage();
                     continue;
                 }
 
-                if (item != null){
+                if (item != null) {
                     oldPrice = item.getPrice();
                     item.setPrice(newPrice);
                     MessagesFunctions.updatePriceMessage(oldPrice, newPrice, item.getName());
@@ -87,7 +88,7 @@ public class UpdateItemFunctions {
                     MessagesFunctions.itemIdNotFoundMessage();
                 }
 
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 MessagesFunctions.errorNumberMessage();
             }
         }

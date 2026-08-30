@@ -38,27 +38,30 @@ public class ItemsInformation {
         String itemId = "";
 
         while (!isValid) {
+            System.out.println("=".repeat(30));
             System.out.print("Enter Item's ID (ABC-1234): ");
             String userInputTemp = sc.nextLine().trim();
 
-            if (checkerFunctions.checkItemIdExists(userInputTemp) && "addItem".equalsIgnoreCase(getIdType)){
-                MessagesFunctions.itemIdExistMessage();
-                continue;
-            }
-            
-            if (Validations.isItemValid(userInputTemp)) {
-                itemId = userInputTemp;
-                isValid = true;
-            } else {
+            if (!Validations.isItemValid(userInputTemp)) {
+                System.out.println("=".repeat(30));
                 MessagesFunctions.errorStringMessage();
                 continue;
             }
 
-            if ("checker".equalsIgnoreCase(getIdType) && checkerFunctions.checkItemIdExists(itemId)){
-                isValid = true;
-            } else if ("checker".equalsIgnoreCase(getIdType)) {
-                MessagesFunctions.itemIdNotFoundMessage();
+            if ("addItem".equalsIgnoreCase(getIdType) && checkerFunctions.checkItemIdExists(userInputTemp)) {
+                System.out.println("=".repeat(30));
+                MessagesFunctions.itemIdExistMessage();
+                continue;
             }
+
+            if ("checker".equalsIgnoreCase(getIdType) && !checkerFunctions.checkItemIdExists(userInputTemp)) {
+                System.out.println("=".repeat(30));
+                MessagesFunctions.itemIdNotFoundMessage();
+                continue;
+            }
+
+            itemId = userInputTemp;
+            isValid = true;
         }
 
         return itemId.toUpperCase();

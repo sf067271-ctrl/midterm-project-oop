@@ -28,8 +28,8 @@ public class MenuFunctions {
 
         String category = addItems.getCategory();
 
-        String itemName = addItems.getName();
         String itemId = addItems.getId("addItem").toUpperCase();
+        String itemName = addItems.getName();
         int itemQuantity = addItems.getQuantity();
         double itemPrice = addItems.getPrice();
 
@@ -53,25 +53,26 @@ public class MenuFunctions {
 
         System.out.println("=".repeat(30));
         System.out.printf("%20s\n", "UPDATE ITEM");
-        System.out.println("=".repeat(30));
 
         if (ItemInventory.isEmpty()) {
             MessagesFunctions.arrayEmptyMessage();
             return;
         }
 
-        while(!isValid){
+        while (!isValid) {
             // Asks for the item's id before updating an item
             String itemId = information.getId("checker");
 
             Items item = checkerFunctions.findItem(itemId);
 
-            while (item != null && !isUpdated){
+            System.out.println("=".repeat(30));
+
+            while (item != null && !isUpdated) {
                 System.out.println("What option would you like to update: ");
                 System.out.println("1. Quantity");
                 System.out.println("2. Price");
                 System.out.print("Enter your choice: ");
-                
+
                 String userChoice = sc.nextLine().trim();
 
                 switch (userChoice) {
@@ -92,15 +93,14 @@ public class MenuFunctions {
     public void removeItem() {
 
         boolean isValid = false;
+        System.out.println("=".repeat(30));
 
         if (ItemInventory.isEmpty()) {
-            System.out.println("=".repeat(30));
             MessagesFunctions.arrayEmptyMessage();
-            return;            
+            return;
         }
 
         while (!isValid) {
-            System.out.println("=".repeat(30));
             String itemId = information.getId("checker");
 
             Items item = checkerFunctions.findItem(itemId);
@@ -298,10 +298,6 @@ public class MenuFunctions {
     }
 
     public void searchItem() {
-        boolean isFound = false;
-
-        System.out.println("=".repeat(30));
-
         if (ItemInventory.isEmpty()) {
             MessagesFunctions.arrayEmptyMessage();
             return;
@@ -309,25 +305,16 @@ public class MenuFunctions {
 
         String itemID = information.getId("checker");
 
-        System.out.println("=".repeat(30));
-
-        while (!isFound) {
-            Items item = checkerFunctions.findItem(itemID);
-
-            if (item != null) {
-                isFound = true;
-
-                System.out.println("\n==============================================");
-                System.out.println("Item Found!");
-                System.out.println("==============================================");
-                System.out.println("ID       : " + item.getId());
-                System.out.println("Name     : " + item.getName());
-                System.out.println("Quantity : " + item.getQuantity());
-                System.out.printf("Price    : P%,.2f%n", item.getPrice());
-                System.out.println("Category : " + item.getCategory());
-            } else {
-                MessagesFunctions.itemIdNotFoundMessage();
-            }
+        Items item = checkerFunctions.findItem(itemID);
+        if (item != null) {
+            System.out.println("\n==============================================");
+            System.out.println("Item Found!");
+            System.out.println("==============================================");
+            System.out.println("ID       : " + item.getId());
+            System.out.println("Name     : " + item.getName());
+            System.out.println("Quantity : " + item.getQuantity());
+            System.out.printf("Price    : P%,.2f%n", item.getPrice());
+            System.out.println("Category : " + item.getCategory());
         }
     }
 
