@@ -2,6 +2,10 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class MenuFunctions {
+
+    private static final String BORDER = "=".repeat(70);
+    private static final String LINE = "-".repeat(70);
+
     final private Scanner sc;
     final private ArrayList<Items> ItemInventory = new ArrayList<>();
 
@@ -16,61 +20,66 @@ public class MenuFunctions {
         this.checkerFunctions = new CheckerFunctions(ItemInventory);
         this.sortItemsFunctions = new SortItemsFunctions(this.sc, ItemInventory);
         this.information = new ItemsInformation(this.sc, ItemInventory);
+
         ItemInventory.add(new Clothing("ABC-1234", "Louie", 2, 23.45));
     }
 
+    private void printHeader(String title) {
+        System.out.println(); 
+        System.out.println(BORDER);
+        System.out.printf("%" + ((70 + title.length()) / 2) + "s%n", title);
+        System.out.println(BORDER);
+    }
+
     public void addItem() {
-        System.out.println("=".repeat(30));
-        System.out.printf("%18s\n", "ADD ITEM");
-        System.out.println("=".repeat(30));
+
+        printHeader("ADD ITEM");
 
         ItemsInformation addItems = new ItemsInformation(sc, ItemInventory);
 
         String category = addItems.getCategory();
-
         String itemId = addItems.getId("addItem").toUpperCase();
         String itemName = addItems.getName();
         int itemQuantity = addItems.getQuantity();
         double itemPrice = addItems.getPrice();
 
-        System.out.println("=".repeat(30));
-
         if (category.equalsIgnoreCase("clothing")) {
             ItemInventory.add(new Clothing(itemId, itemName, itemQuantity, itemPrice));
-            MessagesFunctions.addedSuccessMessage();
         } else if (category.equalsIgnoreCase("entertainment")) {
             ItemInventory.add(new Entertainment(itemId, itemName, itemQuantity, itemPrice));
-            MessagesFunctions.addedSuccessMessage();
         } else if (category.equalsIgnoreCase("electronics")) {
             ItemInventory.add(new Electronics(itemId, itemName, itemQuantity, itemPrice));
-            MessagesFunctions.addedSuccessMessage();
         }
+
+        MessagesFunctions.addedSuccessMessage();
     }
 
     public void updateItem() {
-        boolean isValid = false;
-        boolean isUpdated = false;
 
-        System.out.println("=".repeat(30));
-        System.out.printf("%20s\n", "UPDATE ITEM");
+        printHeader("UPDATE ITEM");
 
         if (ItemInventory.isEmpty()) {
             MessagesFunctions.arrayEmptyMessage();
             return;
         }
 
+        boolean isValid = false;
+        boolean isUpdated = false;
+
         while (!isValid) {
-            // Asks for the item's id before updating an item
+
             String itemId = information.getId("checker");
 
             Items item = checkerFunctions.findItem(itemId);
 
-            System.out.println("=".repeat(30));
+            if (item != null && !isUpdated) {
 
-            while (item != null && !isUpdated) {
-                System.out.println("What option would you like to update: ");
+                System.out.println();
+                System.out.println(LINE);
+                System.out.println("What option would you like to update?");
                 System.out.println("1. Quantity");
                 System.out.println("2. Price");
+                System.out.println(LINE);
                 System.out.print("Enter your choice: ");
 
                 String userChoice = sc.nextLine().trim();
@@ -92,31 +101,26 @@ public class MenuFunctions {
 
     public void removeItem() {
 
-        boolean isValid = false;
-        System.out.println("=".repeat(30));
+        printHeader("REMOVE ITEM");
 
         if (ItemInventory.isEmpty()) {
             MessagesFunctions.arrayEmptyMessage();
             return;
         }
 
-        while (!isValid) {
-            String itemId = information.getId("checker");
+        String itemId = information.getId("checker");
 
-            Items item = checkerFunctions.findItem(itemId);
+        Items item = checkerFunctions.findItem(itemId);
 
-            System.out.println("=".repeat(30));
-
-            if (item != null) {
-                ItemInventory.remove(item);
-                MessagesFunctions.removeItemMessage(item.getName());
-                isValid = true;
-            }
+        if (item != null) {
+            ItemInventory.remove(item);
+            MessagesFunctions.removeItemMessage(item.getName());
         }
     }
 
     public void displayItemsByCategory() {
-        System.out.println("=".repeat(30));
+
+        printHeader("DISPLAY ITEMS BY CATEGORY");
 
         if (ItemInventory.isEmpty()) {
             MessagesFunctions.arrayEmptyMessage();
@@ -125,13 +129,11 @@ public class MenuFunctions {
 
         String userInput = information.getCategory();
 
-        // Column headers
         String idHeader = "ID";
         String nameHeader = "Name";
         String quantityHeader = "Quantity";
         String priceHeader = "Price";
 
-        // Start column widths based on header lengths
         int idWidth = idHeader.length();
         int nameWidth = nameHeader.length();
         int quantityWidth = quantityHeader.length();
@@ -139,10 +141,9 @@ public class MenuFunctions {
 
         boolean isFound = false;
 
-        // Find the longest value in each column
         for (Items item : ItemInventory) {
-            if (item.getCategory().equalsIgnoreCase(userInput)) {
 
+            if (item.getCategory().equalsIgnoreCase(userInput)) {
                 isFound = true;
 
                 String id = item.getId();
@@ -157,37 +158,36 @@ public class MenuFunctions {
             }
         }
 
-        System.out.println("=".repeat(30));
-
         if (!isFound) {
-            MessagesFunctions.errorCategoryMessage(userInput); // userInput is a category
+            MessagesFunctions.errorCategoryMessage(userInput);
             return;
         }
 
-        // Add padding between columns
         idWidth += 2;
         nameWidth += 2;
         quantityWidth += 2;
         priceWidth += 2;
 
-        // Create dynamic row format
         String rowFormat = "%-" + idWidth + "s"
                 + "%-" + nameWidth + "s"
                 + "%-" + quantityWidth + "s"
-                + "%-" + priceWidth + "s";
+                + "%-" + priceWidth + "s%n";
 
-        // Calculate total table width
         int totalWidth = idWidth
                 + nameWidth
                 + quantityWidth
                 + priceWidth;
 
-        // Separator
         String separator = "=".repeat(totalWidth);
+        String middleSeparator = "-".repeat(totalWidth);
 
-        // Display table
-        System.out.println("\n\n" + separator);
-        System.out.println("Items under " + userInput.toUpperCase() + ":");
+        System.out.println();
+        System.out.println(separator);
+
+        String title = "ITEMS UNDER " + userInput.toUpperCase();
+
+        System.out.printf("%" + ((totalWidth + title.length()) / 2) + "s%n", title);
+
         System.out.println(separator);
 
         System.out.printf(
@@ -197,10 +197,10 @@ public class MenuFunctions {
                 quantityHeader,
                 priceHeader);
 
-        System.out.println("\n" + separator);
+        System.out.println(middleSeparator);
 
-        // Display matching items
         for (Items item : ItemInventory) {
+
             if (item.getCategory().equalsIgnoreCase(userInput)) {
 
                 String id = item.getId();
@@ -217,12 +217,13 @@ public class MenuFunctions {
             }
         }
 
-        System.out.println("\n" + separator + "\n\n");
+        System.out.println(separator);
     }
 
     public void displayAllItems() {
+
         if (ItemInventory.isEmpty()) {
-            System.out.println("=".repeat(30));
+            printHeader("DISPLAY ALL ITEMS");
             MessagesFunctions.arrayEmptyMessage();
             return;
         }
@@ -239,13 +240,12 @@ public class MenuFunctions {
         int priceWidth = priceHeader.length();
         int categoryWidth = categoryHeader.length();
 
-        // Find the longest value in each column
         for (Items item : ItemInventory) {
 
             String id = item.getId();
             String name = item.getName();
             String quantity = String.valueOf(item.getQuantity());
-            String price = String.format("%.2f", item.getPrice());
+            String price = String.format("P%,.2f", item.getPrice());
             String category = item.getCategory();
 
             idWidth = Math.max(idWidth, id.length());
@@ -255,49 +255,70 @@ public class MenuFunctions {
             categoryWidth = Math.max(categoryWidth, category.length());
         }
 
-        // Add some spacing between columns
         idWidth += 2;
         nameWidth += 2;
         quantityWidth += 2;
-        priceWidth += 4;
+        priceWidth += 2;
         categoryWidth += 2;
 
-        // Get the total width of the table
-        int totalWidth = idWidth + nameWidth + quantityWidth + priceWidth + categoryWidth;
+        String rowFormat = "%-" + idWidth + "s"
+                + "%-" + nameWidth + "s"
+                + "%-" + quantityWidth + "s"
+                + "%-" + priceWidth + "s"
+                + "%-" + categoryWidth + "s%n";
 
-        System.out.println("=".repeat(totalWidth));
-        System.out.printf("%32s%n", "DISPLAY ALL ITEMS");
-        System.out.println("=".repeat(totalWidth));
+        int totalWidth = idWidth
+                + nameWidth
+                + quantityWidth
+                + priceWidth
+                + categoryWidth;
 
-        // Print header
-        System.out.printf("%-" + idWidth + "s", idHeader);
-        System.out.printf("%-" + nameWidth + "s", nameHeader);
-        System.out.printf("%-" + quantityWidth + "s", quantityHeader);
-        System.out.printf("%-" + priceWidth + "s", priceHeader);
-        System.out.printf("%-" + categoryWidth + "s%n", categoryHeader);
+        String separator = "=".repeat(totalWidth);
+        String middleSeparator = "-".repeat(totalWidth);
 
-        System.out.println("=".repeat(totalWidth));
+        System.out.println();
+        System.out.println(separator);
 
-        // Print items
+        String title = "DISPLAY ALL ITEMS";
+
+        System.out.printf("%" + ((totalWidth + title.length()) / 2) + "s%n", title);
+
+        System.out.println(separator);
+
+        System.out.printf(
+                rowFormat,
+                idHeader,
+                nameHeader,
+                quantityHeader,
+                priceHeader,
+                categoryHeader);
+
+        System.out.println(middleSeparator);
+
         for (Items item : ItemInventory) {
 
-            String category = item.getCategory();
             String id = item.getId();
             String name = item.getName();
             String quantity = String.valueOf(item.getQuantity());
             String price = String.format("P%,.2f", item.getPrice());
+            String category = item.getCategory();
 
-            System.out.printf("%-" + idWidth + "s", id);
-            System.out.printf("%-" + nameWidth + "s", name);
-            System.out.printf("%-" + quantityWidth + "s", quantity);
-            System.out.printf("%-" + priceWidth + "s", price);
-            System.out.printf("%-" + categoryWidth + "s%n", category);
+            System.out.printf(
+                    rowFormat,
+                    id,
+                    name,
+                    quantity,
+                    price,
+                    category);
         }
 
-        System.out.println("=".repeat(totalWidth) + "\n");
+        System.out.println(separator);
     }
 
     public void searchItem() {
+
+        printHeader("SEARCH ITEM");
+
         if (ItemInventory.isEmpty()) {
             MessagesFunctions.arrayEmptyMessage();
             return;
@@ -306,53 +327,67 @@ public class MenuFunctions {
         String itemID = information.getId("checker");
 
         Items item = checkerFunctions.findItem(itemID);
+
         if (item != null) {
-            System.out.println("\n==============================================");
+
+            System.out.println();
+            System.out.println(LINE);
             System.out.println("Item Found!");
-            System.out.println("==============================================");
-            System.out.println("ID       : " + item.getId());
-            System.out.println("Name     : " + item.getName());
-            System.out.println("Quantity : " + item.getQuantity());
-            System.out.printf("Price    : P%,.2f%n", item.getPrice());
-            System.out.println("Category : " + item.getCategory());
+            System.out.println(LINE);
+
+            System.out.printf("%-12s: %s%n", "ID", item.getId());
+            System.out.printf("%-12s: %s%n", "Name", item.getName());
+            System.out.printf("%-12s: %d%n", "Quantity", item.getQuantity());
+            System.out.printf("%-12s: P%,.2f%n", "Price", item.getPrice());
+
+            System.out.printf("%-12s: %s%n", "Category", item.getCategory());
+
+            System.out.println(LINE);
         }
     }
 
     public void sortItem() {
-        boolean isValid = false;
 
-        System.out.println("=".repeat(30));
+        printHeader("SORT ITEMS");
 
         if (ItemInventory.isEmpty()) {
             MessagesFunctions.arrayEmptyMessage();
             return;
         }
 
+        boolean isValid = false;
+
         while (!isValid) {
-            System.out.println("What option would you like to sort: ");
+
+            System.out.println();
+            System.out.println(LINE);
+            System.out.println("What option would you like to sort by?");
             System.out.println("1. Quantity");
             System.out.println("2. Price");
+            System.out.println(LINE);
             System.out.print("Enter your choice: ");
 
             String userChoice = sc.nextLine().trim();
 
             switch (userChoice) {
+
                 case "1" -> {
                     sortItemsFunctions.sortByQuantity();
                     isValid = true;
                 }
+
                 case "2" -> {
                     sortItemsFunctions.sortByPrice();
                     isValid = true;
                 }
-                default -> MessagesFunctions.switchErrorMessage();
+
+                default ->
+                    MessagesFunctions.switchErrorMessage();
             }
         }
     }
 
     public void displayLowStockItems() {
-
-        System.out.println("=".repeat(30));
 
         if (ItemInventory.isEmpty()) {
             MessagesFunctions.arrayEmptyMessage();
@@ -373,9 +408,7 @@ public class MenuFunctions {
 
         boolean isFound = false;
 
-        // Find the longest values of low-stock items
         for (Items item : ItemInventory) {
-
             if (item.getQuantity() <= 5) {
 
                 isFound = true;
@@ -394,27 +427,27 @@ public class MenuFunctions {
             }
         }
 
-        // No low-stock items
         if (!isFound) {
+            System.out.println();
+            System.out.println(LINE);
             System.out.println("No items are currently low on stock.");
+            System.out.println(LINE);
+
             return;
         }
 
-        // Add spacing
         idWidth += 2;
         nameWidth += 2;
         quantityWidth += 2;
         priceWidth += 2;
         categoryWidth += 2;
 
-        // Create dynamic row format
         String rowFormat = "%-" + idWidth + "s"
                 + "%-" + nameWidth + "s"
                 + "%-" + quantityWidth + "s"
                 + "%-" + priceWidth + "s"
                 + "%-" + categoryWidth + "s%n";
 
-        // Calculate table width
         int totalWidth = idWidth
                 + nameWidth
                 + quantityWidth
@@ -422,9 +455,15 @@ public class MenuFunctions {
                 + categoryWidth;
 
         String separator = "=".repeat(totalWidth);
+        String middleSeparator = "-".repeat(totalWidth);
 
-        // Display table
-        System.out.println("\nLow Stock Items:");
+        System.out.println();
+        System.out.println(separator);
+
+        String title = "LOW STOCK ITEMS (QUANTITY <= 5)";
+
+        System.out.printf("%" + ((totalWidth + title.length()) / 2) + "s%n", title);
+
         System.out.println(separator);
 
         System.out.printf(
@@ -435,9 +474,8 @@ public class MenuFunctions {
                 priceHeader,
                 categoryHeader);
 
-        System.out.println(separator);
+        System.out.println(middleSeparator);
 
-        // Display low-stock items
         for (Items item : ItemInventory) {
 
             if (item.getQuantity() <= 5) {
@@ -462,9 +500,13 @@ public class MenuFunctions {
     }
 
     public boolean exit() {
-        System.out.println("=".repeat(30));
-        System.out.println("Exiting Program.");
-        System.out.println("=".repeat(30));
+        System.out.println();
+        System.out.println(BORDER);
+        System.out.printf(
+                "%36s%n",
+                "Exiting Program...");
+        System.out.println(BORDER);
+
         return true;
     }
 }

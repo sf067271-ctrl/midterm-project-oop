@@ -3,6 +3,8 @@ import java.util.Scanner;
 
 public class SortItemsFunctions {
 
+    private static final String LINE = "-".repeat(70);
+
     private final Scanner sc;
     private final ArrayList<Items> items;
 
@@ -12,32 +14,26 @@ public class SortItemsFunctions {
     }
 
     public boolean ascendingDescending() {
-        // TRUE = ASC
-        // FALSE = DESC
-
         boolean isValid = false;
         boolean ascending = false;
 
-        System.out.println("=".repeat(30));
+        System.out.println();
+        System.out.println(LINE);
 
         while (!isValid) {
-            System.out.print("Please input if Ascending (ASC) or Descending (DESC): ");
+            System.out.print("Enter Ascending (ASC) or Descending (DESC): ");
+
             String userInput = sc.nextLine().trim();
 
-            if ("ascending".equalsIgnoreCase(userInput)
-                    || "asc".equalsIgnoreCase(userInput)) {
-
+            if ("ascending".equalsIgnoreCase(userInput) || "asc".equalsIgnoreCase(userInput)) {
                 ascending = true;
                 isValid = true;
-
-            } else if ("descending".equalsIgnoreCase(userInput)
-                    || "desc".equalsIgnoreCase(userInput)) {
-
+            } else if ("descending".equalsIgnoreCase(userInput) || "desc".equalsIgnoreCase(userInput)) {
                 ascending = false;
                 isValid = true;
-
             } else {
-                System.out.println("Invalid input. Please enter Ascending (ASC) or Descending (DESC).");
+                System.out.println();
+                System.out.println("Invalid input. Please enter Ascending (ASC) " + "or Descending (DESC).");
             }
         }
 
@@ -51,16 +47,12 @@ public class SortItemsFunctions {
     }
 
     public void sortByQuantity() {
-
         boolean ascending = ascendingDescending();
 
-        // This creates a temporary ArrayList that will be sorted instead of the original
         ArrayList<Items> sortedItems = new ArrayList<>(items);
 
-        // Sorts the temporary ArrayList
         for (int i = 0; i < sortedItems.size() - 1; i++) {
             for (int j = i + 1; j < sortedItems.size(); j++) {
-
                 if (ascending && sortedItems.get(i).getQuantity() > sortedItems.get(j).getQuantity()) {
                     swap(sortedItems, i, j);
                 }
@@ -71,41 +63,35 @@ public class SortItemsFunctions {
             }
         }
 
-        // Display the sorted copy
+        System.out.println();
+        System.out.println("Sorted by Quantity - " + (ascending ? "Ascending" : "Descending"));
         displayItems(sortedItems);
     }
 
     public void sortByPrice() {
-
         boolean ascending = ascendingDescending();
 
-        // This creates a temporary ArrayList that will be sorted instead of the original
         ArrayList<Items> sortedItems = new ArrayList<>(items);
 
-        // Sorts the temporary ArrayList
         for (int i = 0; i < sortedItems.size() - 1; i++) {
             for (int j = i + 1; j < sortedItems.size(); j++) {
-
-                if (ascending
-                        && sortedItems.get(i).getPrice() > sortedItems.get(j).getPrice()) {
-
+                if (ascending && sortedItems.get(i).getPrice() > sortedItems.get(j).getPrice()) {
                     swap(sortedItems, i, j);
                 }
 
-                if (!ascending
-                        && sortedItems.get(i).getPrice() < sortedItems.get(j).getPrice()) {
-
+                if (!ascending && sortedItems.get(i).getPrice() < sortedItems.get(j).getPrice()) {
                     swap(sortedItems, i, j);
                 }
             }
         }
 
-        // Display the sorted copy
+        System.out.println();
+        System.out.println("Sorted by Price - " + (ascending ? "Ascending" : "Descending"));
+
         displayItems(sortedItems);
     }
 
     public void displayItems(ArrayList<Items> itemsToDisplay) {
-
         if (itemsToDisplay.isEmpty()) {
             System.out.println("No items available.");
             return;
@@ -123,7 +109,6 @@ public class SortItemsFunctions {
         int priceWidth = priceHeader.length();
         int categoryWidth = categoryHeader.length();
 
-        // Find longest value in each column
         for (Items item : itemsToDisplay) {
 
             String id = item.getId();
@@ -139,7 +124,6 @@ public class SortItemsFunctions {
             categoryWidth = Math.max(categoryWidth, category.length());
         }
 
-        // Add spacing
         idWidth += 2;
         nameWidth += 2;
         quantityWidth += 2;
@@ -160,7 +144,9 @@ public class SortItemsFunctions {
 
         String separator = "=".repeat(totalWidth);
 
-        // Display table
+        String middleSeparator = "-".repeat(totalWidth);
+
+        System.out.println();
         System.out.println(separator);
 
         System.out.printf(
@@ -169,10 +155,9 @@ public class SortItemsFunctions {
                 nameHeader,
                 quantityHeader,
                 priceHeader,
-                categoryHeader
-        );
+                categoryHeader);
 
-        System.out.println(separator);
+        System.out.println(middleSeparator);
 
         for (Items item : itemsToDisplay) {
 
@@ -188,8 +173,7 @@ public class SortItemsFunctions {
                     name,
                     quantity,
                     price,
-                    category
-            );
+                    category);
         }
 
         System.out.println(separator);

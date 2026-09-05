@@ -24,38 +24,35 @@ public class ItemsInformation {
             if (userInput.toUpperCase().equals("CLOTHING")
                     || userInput.toUpperCase().equals("ELECTRONICS")
                     || userInput.toUpperCase().equals("ENTERTAINMENT")) {
-                isValid = true;
+                    isValid = true;
             } else {
                 MessagesFunctions.errorCategoryMessage(userInput);
             }
         }
 
-        return userInput;
-    }
+
+    return userInput;
+} 
 
     public String getId(String getIdType) {
         boolean isValid = false;
         String itemId = "";
 
         while (!isValid) {
-            System.out.println("=".repeat(30));
             System.out.print("Enter Item's ID (ABC-1234): ");
             String userInputTemp = sc.nextLine().trim();
 
             if (!Validations.isItemValid(userInputTemp)) {
-                System.out.println("=".repeat(30));
                 MessagesFunctions.errorStringMessage();
                 continue;
             }
 
             if ("addItem".equalsIgnoreCase(getIdType) && checkerFunctions.checkItemIdExists(userInputTemp)) {
-                System.out.println("=".repeat(30));
                 MessagesFunctions.itemIdExistMessage();
                 continue;
             }
 
             if ("checker".equalsIgnoreCase(getIdType) && !checkerFunctions.checkItemIdExists(userInputTemp)) {
-                System.out.println("=".repeat(30));
                 MessagesFunctions.itemIdNotFoundMessage();
                 continue;
             }

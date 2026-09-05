@@ -10,18 +10,20 @@ public class UserInterface {
         MenuFunctions mf = new MenuFunctions(scanner);
 
         while (!exit) {
-            System.out.println("=".repeat(30));
-            System.out.printf("%17s\n", "MENU");
-            System.out.println("=".repeat(30));
-            System.out.println("1. Add Item");
-            System.out.println("2. Update Item");
-            System.out.println("3. Remove Item");
-            System.out.println("4. Display Items by Category");
-            System.out.println("5. Display All Items");
-            System.out.println("6. Search Item");
-            System.out.println("7. Sort Items");
-            System.out.println("8. Display Low Stock Items");
-            System.out.println("9. Exit");
+            System.out.println();
+            System.out.println("============================================================");
+            System.out.printf("%36s%n", "INVENTORY MANAGEMENT SYSTEM");
+            System.out.println("============================================================");
+            System.out.println("  1. Add Item");
+            System.out.println("  2. Update Item");
+            System.out.println("  3. Remove Item");
+            System.out.println("  4. Display Items by Category");
+            System.out.println("  5. Display All Items");
+            System.out.println("  6. Search Item");
+            System.out.println("  7. Sort Items");
+            System.out.println("  8. Display Low Stock Items");
+            System.out.println("  9. Exit");
+            System.out.println("------------------------------------------------------------");
             System.out.print("Enter your choice: ");
 
             String userChoice = scanner.nextLine().trim();
