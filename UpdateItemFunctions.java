@@ -26,7 +26,7 @@ public class UpdateItemFunctions {
         int oldQuantity;
 
         while (!isValid) {
-            System.out.printf("Input new Quantity for (Item ID: %s): ", itemId);
+            System.out.printf("Input new Quantity for Item ID: %s (0-100,000): ", itemId);
             String newQuantityTemp = sc.nextLine().trim();
 
             try {
@@ -64,7 +64,7 @@ public class UpdateItemFunctions {
         System.out.println("=".repeat(30));
 
         while (!isValid) {
-            System.out.printf("Input new Price for (Item ID: %s): P", itemId);
+            System.out.printf("Input new Price for Item ID: %s: P", itemId);
             String newPriceTemp = sc.nextLine();
             double oldPrice;
 

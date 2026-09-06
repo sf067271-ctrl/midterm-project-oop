@@ -24,15 +24,14 @@ public class ItemsInformation {
             if (userInput.toUpperCase().equals("CLOTHING")
                     || userInput.toUpperCase().equals("ELECTRONICS")
                     || userInput.toUpperCase().equals("ENTERTAINMENT")) {
-                    isValid = true;
+                isValid = true;
             } else {
                 MessagesFunctions.errorCategoryMessage(userInput);
             }
         }
 
-
-    return userInput;
-} 
+        return userInput;
+    }
 
     public String getId(String getIdType) {
         boolean isValid = false;
@@ -87,7 +86,7 @@ public class ItemsInformation {
         int quantity = 0;
 
         while (!isValid) {
-            System.out.print("Enter item's Quantity: ");
+            System.out.print("Enter item's Quantity (1-100,000): ");
             String quantityString = sc.nextLine().trim();
 
             try {
@@ -123,7 +122,7 @@ public class ItemsInformation {
             try {
                 itemPrice = Double.parseDouble(itemPriceTemp);
 
-                if (itemPrice < 0) {
+                if (itemPrice <= 0) {
                     MessagesFunctions.errorNumberMessage();
                     continue;
                 }

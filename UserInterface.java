@@ -12,7 +12,7 @@ public class UserInterface {
         while (!exit) {
             System.out.println();
             System.out.println("============================================================");
-            System.out.printf("%36s%n", "INVENTORY MANAGEMENT SYSTEM");
+            System.out.printf("%36s%n", "MAIN MENU");
             System.out.println("============================================================");
             System.out.println("  1. Add Item");
             System.out.println("  2. Update Item");

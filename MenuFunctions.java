@@ -25,7 +25,7 @@ public class MenuFunctions {
     }
 
     private void printHeader(String title) {
-        System.out.println(); 
+        System.out.println();
         System.out.println(BORDER);
         System.out.printf("%" + ((70 + title.length()) / 2) + "s%n", title);
         System.out.println(BORDER);
@@ -370,19 +370,15 @@ public class MenuFunctions {
             String userChoice = sc.nextLine().trim();
 
             switch (userChoice) {
-
                 case "1" -> {
                     sortItemsFunctions.sortByQuantity();
                     isValid = true;
                 }
-
                 case "2" -> {
                     sortItemsFunctions.sortByPrice();
                     isValid = true;
                 }
-
-                default ->
-                    MessagesFunctions.switchErrorMessage();
+                default -> MessagesFunctions.switchErrorMessage();
             }
         }
     }
