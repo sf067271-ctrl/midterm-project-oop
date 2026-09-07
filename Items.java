@@ -1,11 +1,11 @@
 public abstract class Items {
-    private String ID;
+    private String id;
     private String name;
     private int quantity;
     private double price;
 
-    public Items(String ID, String name, int quantity, double price) {
-        this.ID = ID;
+    public Items(String id, String name, int quantity, double price) {
+        this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -13,7 +13,7 @@ public abstract class Items {
 
     // Getters
     public String getId() {
-        return ID;
+        return id;
     }
 
     public String getName() {

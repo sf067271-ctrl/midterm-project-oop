@@ -78,4 +78,18 @@ public class MessagesFunctions {
         System.out.printf("Category %s does not exist!%n", category);
         System.out.println(LINE);
     }
+
+    public static void sameItemPriceQuantityMessage(String itemName, String type) {
+        System.out.println();
+        System.out.println(LINE);
+        System.out.printf("Item %s has the same %s as before. No changes made.%n", itemName, type);
+        System.out.println(LINE);
+    }
+
+    public static void noItemsInCategoryMessage(String category) {
+        System.out.println();
+        System.out.println(LINE);
+        System.out.printf("No items found in category %s.%n", category);
+        System.out.println(LINE);
+    }
 }

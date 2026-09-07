@@ -43,24 +43,18 @@ public class ItemsInformation {
 
             if (!Validations.isItemValid(userInputTemp)) {
                 MessagesFunctions.errorStringMessage();
-                continue;
-            }
-
-            if ("addItem".equalsIgnoreCase(getIdType) && checkerFunctions.checkItemIdExists(userInputTemp)) {
+            }else if ("addItem".equalsIgnoreCase(getIdType) && checkerFunctions.checkItemIdExists(userInputTemp)) {
                 MessagesFunctions.itemIdExistMessage();
-                continue;
-            }
-
-            if ("checker".equalsIgnoreCase(getIdType) && !checkerFunctions.checkItemIdExists(userInputTemp)) {
+            }else if ("checker".equalsIgnoreCase(getIdType) && !checkerFunctions.checkItemIdExists(userInputTemp)) {
                 MessagesFunctions.itemIdNotFoundMessage();
-                continue;
+                return "";
+            }else {
+                itemId = userInputTemp;
+                isValid = true;
             }
-
-            itemId = userInputTemp;
-            isValid = true;
         }
 
-        return itemId.toUpperCase();
+        return itemId;
     }
 
     public String getName() {
@@ -71,7 +65,7 @@ public class ItemsInformation {
             System.out.print("Enter Item's Name: ");
             name = sc.nextLine().trim();
 
-            if (Validations.isItemNameValid(name)) {
+            if (!name.isEmpty()) {
                 isValid = true;
             } else {
                 MessagesFunctions.errorStringMessage();
@@ -122,7 +116,7 @@ public class ItemsInformation {
             try {
                 itemPrice = Double.parseDouble(itemPriceTemp);
 
-                if (itemPrice <= 0) {
+                if (itemPrice <= 0 || Double.isNaN(itemPrice) || Double.isInfinite(itemPrice)) {
                     MessagesFunctions.errorNumberMessage();
                     continue;
                 }

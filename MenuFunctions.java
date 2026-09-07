@@ -6,8 +6,8 @@ public class MenuFunctions {
     private static final String BORDER = "=".repeat(70);
     private static final String LINE = "-".repeat(70);
 
-    final private Scanner sc;
-    final private ArrayList<Items> ItemInventory = new ArrayList<>();
+    private final Scanner sc;
+    private final ArrayList<Items> ItemInventory = new ArrayList<>();
 
     UpdateItemFunctions updateItemFunctions;
     CheckerFunctions checkerFunctions;
@@ -16,12 +16,14 @@ public class MenuFunctions {
 
     public MenuFunctions(Scanner sc) {
         this.sc = sc;
-        this.updateItemFunctions = new UpdateItemFunctions(this.sc, ItemInventory);
+        this.updateItemFunctions = new UpdateItemFunctions(this.sc);
         this.checkerFunctions = new CheckerFunctions(ItemInventory);
         this.sortItemsFunctions = new SortItemsFunctions(this.sc, ItemInventory);
         this.information = new ItemsInformation(this.sc, ItemInventory);
 
         ItemInventory.add(new Clothing("ABC-1234", "Louie", 2, 23.45));
+        ItemInventory.add(new Electronics("ABC-1235", "Louie2", 22, 232.45));
+        ItemInventory.add(new Entertainment("ABC-1236", "Louie3", 23, 233.45));
     }
 
     private void printHeader(String title) {
@@ -35,13 +37,16 @@ public class MenuFunctions {
 
         printHeader("ADD ITEM");
 
-        ItemsInformation addItems = new ItemsInformation(sc, ItemInventory);
+        String category = information.getCategory();
+        String itemId = information.getId("addItem").toUpperCase();
 
-        String category = addItems.getCategory();
-        String itemId = addItems.getId("addItem").toUpperCase();
-        String itemName = addItems.getName();
-        int itemQuantity = addItems.getQuantity();
-        double itemPrice = addItems.getPrice();
+        if (itemId.isEmpty()) {
+            return;
+        }
+
+        String itemName = information.getName();
+        int itemQuantity = information.getQuantity();
+        double itemPrice = information.getPrice();
 
         if (category.equalsIgnoreCase("clothing")) {
             ItemInventory.add(new Clothing(itemId, itemName, itemQuantity, itemPrice));
@@ -69,6 +74,10 @@ public class MenuFunctions {
         while (!isValid) {
 
             String itemId = information.getId("checker");
+
+            if (itemId.isEmpty()) {
+                return;
+            }
 
             Items item = checkerFunctions.findItem(itemId);
 
@@ -110,6 +119,10 @@ public class MenuFunctions {
 
         String itemId = information.getId("checker");
 
+        if (itemId.isEmpty()) {
+            return;
+        }
+
         Items item = checkerFunctions.findItem(itemId);
 
         if (item != null) {
@@ -129,6 +142,15 @@ public class MenuFunctions {
 
         String userInput = information.getCategory();
 
+        boolean isValidCategory = userInput.equalsIgnoreCase("clothing")
+                || userInput.equalsIgnoreCase("electronics")
+                || userInput.equalsIgnoreCase("entertainment");
+
+        if (!isValidCategory) {
+            MessagesFunctions.errorCategoryMessage(userInput);
+            return;
+        }
+
         String idHeader = "ID";
         String nameHeader = "Name";
         String quantityHeader = "Quantity";
@@ -142,7 +164,6 @@ public class MenuFunctions {
         boolean isFound = false;
 
         for (Items item : ItemInventory) {
-
             if (item.getCategory().equalsIgnoreCase(userInput)) {
                 isFound = true;
 
@@ -159,7 +180,7 @@ public class MenuFunctions {
         }
 
         if (!isFound) {
-            MessagesFunctions.errorCategoryMessage(userInput);
+            MessagesFunctions.noItemsInCategoryMessage(userInput);
             return;
         }
 
@@ -498,9 +519,7 @@ public class MenuFunctions {
     public boolean exit() {
         System.out.println();
         System.out.println(BORDER);
-        System.out.printf(
-                "%36s%n",
-                "Exiting Program...");
+        System.out.printf("%" + ((BORDER.length() + "Exiting Program...".length()) / 2) + "s%n", "Exiting Program...");
         System.out.println(BORDER);
 
         return true;
