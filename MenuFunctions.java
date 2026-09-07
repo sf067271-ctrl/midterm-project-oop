@@ -20,10 +20,6 @@ public class MenuFunctions {
         this.checkerFunctions = new CheckerFunctions(ItemInventory);
         this.sortItemsFunctions = new SortItemsFunctions(this.sc, ItemInventory);
         this.information = new ItemsInformation(this.sc, ItemInventory);
-
-        ItemInventory.add(new Clothing("ABC-1234", "Louie", 2, 23.45));
-        ItemInventory.add(new Electronics("ABC-1235", "Louie2", 22, 232.45));
-        ItemInventory.add(new Entertainment("ABC-1236", "Louie3", 23, 233.45));
     }
 
     private void printHeader(String title) {

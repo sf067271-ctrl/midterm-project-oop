@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class UpdateItemFunctions {
     private final Scanner sc;
     private final int QUANTITY_LIMIT = 100000;
-    
+
     public UpdateItemFunctions(Scanner sc) {
         this.sc = sc;
     }
@@ -81,12 +81,13 @@ public class UpdateItemFunctions {
 
                 System.out.println("=".repeat(30));
 
-                if (newPrice <= 0 || !Validations.checkValidDouble(newPriceTemp) || Double.isNaN(newPrice) || Double.isInfinite(newPrice)) {
+                if (newPrice <= 0 || !Validations.checkValidDouble(newPriceTemp) || Double.isNaN(newPrice)
+                        || Double.isInfinite(newPrice)) {
                     MessagesFunctions.errorNumberMessage();
                     continue;
                 }
 
-                if(newPrice == item.getPrice()) {
+                if (newPrice == item.getPrice()) {
                     MessagesFunctions.sameItemPriceQuantityMessage(item.getName(), "price");
                     return false;
                 }
